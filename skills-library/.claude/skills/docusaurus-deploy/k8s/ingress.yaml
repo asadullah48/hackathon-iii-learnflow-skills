@@ -1,0 +1,23 @@
+# Implements FR4: Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: learnflow-docs-ingress
+  labels:
+    app: learnflow-docs
+    component: documentation
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - host: docs.learnflow.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: learnflow-docs
+            port:
+              number: 80
