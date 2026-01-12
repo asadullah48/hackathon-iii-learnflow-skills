@@ -1,0 +1,57 @@
+# Implements FR2: Kubernetes Deployment from nextjs-k8s-deploy_SPEC.md
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: learnflow-frontend
+  labels:
+    app: learnflow-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: learnflow-frontend
+  template:
+    metadata:
+      labels:
+        app: learnflow-frontend
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "learnflow-frontend"
+        dapr.io/app-port: "3000"
+    spec:
+      containers:
+      - name: frontend
+        image: learnflow-frontend:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+          name: http
+        env:
+        - name: NEXT_PUBLIC_API_URL
+          value: "http://localhost:3500/v1.0/invoke"
+        - name: DAPR_HTTP_PORT
+          value: "3500"
+        envFrom:
+        - configMapRef:
+            name: frontend-config
+        - secretRef:
+            name: frontend-secrets
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 10

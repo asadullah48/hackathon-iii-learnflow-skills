@@ -1,0 +1,12 @@
+# Implements FR4: ConfigMap from nextjs-k8s-deploy_SPEC.md
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+data:
+  NEXT_PUBLIC_APP_NAME: "LearnFlow"
+  TRIAGE_AGENT_ID: "triage-agent"
+  CONCEPTS_AGENT_ID: "concepts-agent"
+  DEBUG_AGENT_ID: "debug-agent"
+  EXERCISE_AGENT_ID: "exercise-agent"
+  PROGRESS_AGENT_ID: "progress-agent"

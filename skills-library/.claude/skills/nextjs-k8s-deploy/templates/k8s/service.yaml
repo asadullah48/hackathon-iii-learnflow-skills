@@ -1,0 +1,16 @@
+# Implements FR3: Service from nextjs-k8s-deploy_SPEC.md
+apiVersion: v1
+kind: Service
+metadata:
+  name: learnflow-frontend
+  labels:
+    app: learnflow-frontend
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+    name: http
+  selector:
+    app: learnflow-frontend

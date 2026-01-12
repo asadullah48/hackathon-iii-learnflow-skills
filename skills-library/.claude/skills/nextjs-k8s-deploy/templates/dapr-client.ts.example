@@ -1,0 +1,27 @@
+// Implements section 4.3: Dapr Service Invocation from nextjs-k8s-deploy_SPEC.md
+
+const DAPR_URL = `http://localhost:${process.env.DAPR_HTTP_PORT}/v1.0/invoke`
+
+export async function callTriageAgent(query: string) {
+  const response = await fetch(
+    `${DAPR_URL}/triage-agent/method/triage`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query })
+    }
+  )
+  return response.json()
+}
+
+export async function callConceptsAgent(concept: string) {
+  const response = await fetch(
+    `${DAPR_URL}/concepts-agent/method/concepts`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ concept })
+    }
+  )
+  return response.json()
+}

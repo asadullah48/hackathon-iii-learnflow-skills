@@ -1,0 +1,19 @@
+# Implements FR3: Ingress from nextjs-k8s-deploy_SPEC.md
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: learnflow-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: learnflow.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: learnflow-frontend
+            port:
+              number: 80
